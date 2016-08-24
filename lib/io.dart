@@ -102,6 +102,7 @@ class IOCommandProcessor implements CommandProcessor {
     } catch (e) {}
 
     if (response.isRedirect) {
+      print('Redirecting response...');
       return _processResponse(await response.redirect(), value);
     }
 
