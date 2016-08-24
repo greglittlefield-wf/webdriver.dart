@@ -101,6 +101,10 @@ class IOCommandProcessor implements CommandProcessor {
       respBody = JSON.decode(respDecoded);
     } catch (e) {}
 
+    if (response.isRedirect) {
+      return _processResponse(await response.redirect(), value);
+    }
+
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
         (respBody is Map && respBody['status'] != 0)) {
