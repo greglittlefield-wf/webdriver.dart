@@ -94,17 +94,18 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   _processResponse(HttpClientResponse response, bool value) async {
+    print(response.statusCode);
+    if (response.isRedirect) {
+      print('redirecting');
+      return await _processResponse(await response.redirect(), value);
+    }
+
     var respDecoded = await UTF8.decodeStream(response);
     _lock.release();
     Map respBody;
     try {
       respBody = JSON.decode(respDecoded);
     } catch (e) {}
-
-    if (response.isRedirect) {
-      print('Redirecting response...');
-      return _processResponse(await response.redirect(), value);
-    }
 
     if (response.statusCode < 200 ||
         response.statusCode > 299 ||
