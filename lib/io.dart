@@ -94,9 +94,8 @@ class IOCommandProcessor implements CommandProcessor {
   }
 
   _processResponse(HttpClientResponse response, bool value) async {
-    print(response.statusCode);
     if (response.isRedirect) {
-      print('redirecting');
+      print('status: ${response.statusCode} redirecting');
       return await _processResponse(await response.redirect(), value);
     }
 
